@@ -19,10 +19,10 @@ architecture structure of mod10 is
 	signal tmp: std_logic_vector(3 downto 0) := "0000";
 	
 begin
-	Bit0: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(0), clk=>clk,	    clrn=> ((tmp(1) and tmp(3)) xor clr));
-	Bit1: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(1), clk=>not tmp(0), clrn=> ((tmp(1) and tmp(3)) xor clr));
-	Bit2: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(2), clk=>not tmp(1), clrn=> ((tmp(1) and tmp(3)) xor clr));
-	Bit3: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(3), clk=>not tmp(2), clrn=> ((tmp(1) and tmp(3)) xor clr));
+	Bit0: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(0), clk=>clk,	    clrn=> ((tmp(1) and tmp(3)) nor clr));
+	Bit1: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(1), clk=>not tmp(0), clrn=> ((tmp(1) and tmp(3)) nor clr));
+	Bit2: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(2), clk=>not tmp(1), clrn=> ((tmp(1) and tmp(3)) nor clr));
+	Bit3: tff_cp port map(t=>pwr, prn=>pwr, q=>tmp(3), clk=>not tmp(2), clrn=> ((tmp(1) and tmp(3)) nor clr));
 	cout <= tmp(1) and tmp(3);
 	q<=tmp;
 	
