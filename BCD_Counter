@@ -4,30 +4,30 @@ use ieee.std_logic_1164.all;
 
 entity BCD_Counter is
 	port(clk, clr: in std_logic;
-			 sunit, sten, shund: out std_logic_vector(6 downto 0);
-			 dunit, dten, dhund: out std_logic_vector(3 downto 0)
+	     sunit, sten, shund: out std_logic_vector(6 downto 0);
+	     dunit, dten, dhund: out std_logic_vector(3 downto 0)
 	);
 end BCD_Counter;
 
 architecture behavior of BCD_Counter is
 	component bcd2sevenseg is
 		port (BCDin:         in std_logic_vector(3 downto 0);
-			  	Seven_Segment: out std_logic_vector(6 downto 0));
+		      Seven_Segment: out std_logic_vector(6 downto 0));
 	end component;
 	
 	component mod10 is
-		port (clk: 	in std_logic;
-				  clr: 	in std_logic;
-				  q:  	out std_logic_vector(3 downto 0);
-				  cout: out std_logic);
+		port (clk:  in std_logic;
+		      clr:  in std_logic;
+		      q:    out std_logic_vector(3 downto 0);
+		      cout: out std_logic);
 	end component;
 	
 	signal cnt1, cnt2, cnt3: std_logic := '0';              --cout signals
 	signal tmpu, tmpt, tmph: std_logic_vector(3 downto 0);  --temp q signals
 	
 begin
-	Unit:		mod10 port map(clr=>clr, clk=>clk,  q=>tmpu, cout=>cnt1);
-	tens:		mod10 port map(clr=>clr, clk=>cnt1, q=>tmpt, cout=>cnt2);
+	Unit:	mod10 port map(clr=>clr, clk=>clk,  q=>tmpu, cout=>cnt1);
+	tens:	mod10 port map(clr=>clr, clk=>cnt1, q=>tmpt, cout=>cnt2);
 	hunds:	mod10 port map(clr=>clr, clk=>cnt2, q=>tmph, cout=>cnt3);
 
 	dunit <= tmpu;
