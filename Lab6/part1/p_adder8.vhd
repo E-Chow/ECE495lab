@@ -4,17 +4,17 @@ use ieee.std_logic_1164.all;
 
 entity p_adder8 is
 	port (a, b: in std_logic_vector(7 downto 0);
-			c_in: in std_logic;
-			sumSeg1, sumSeg2, c_outSeg: out std_logic_vector(0 to 6));
+	      c_in: in std_logic;
+	      sumSeg1, sumSeg2, c_outSeg: out std_logic_vector(0 to 6));
 end p_adder8;
 
 architecture behavior of p_adder8 is
 	component p_adder is
 		generic (n: positive);
 		port (a, b: in std_logic_vector(n-1 downto 0);
-	      c_in: in std_logic;
-			sum: out std_logic_vector(n-1 downto 0);
-			c_out: out std_logic);
+		      c_in: in std_logic;
+		      sum: out std_logic_vector(n-1 downto 0);
+		      c_out: out std_logic);
 	end component;
 	
 	signal s: std_logic_vector(0 to 7);
@@ -23,8 +23,8 @@ architecture behavior of p_adder8 is
 begin
 
 	adder8: p_adder generic map (n=>8)
-						 port map (a => a, b => b, c_in => c_in,
-									  sum => s, c_out => c);
+			   port map (a => a, b => b, c_in => c_in,
+				     sum => s, c_out => c);
 	
 	SegProcess: process (c,s)
 	begin	
