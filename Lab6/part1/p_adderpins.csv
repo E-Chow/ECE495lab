@@ -1,0 +1,8 @@
+sum[0],ledr[0]
+sum[1],ledr[1]
+c_out,ledr[2]
+c_in,sw[5]
+a[0],sw[0]
+a[1],sw[1]
+b[0],sw[2]
+b[1],sw[3]
