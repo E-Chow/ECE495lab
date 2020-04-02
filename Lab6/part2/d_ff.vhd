@@ -6,7 +6,7 @@ use ieee. std_logic_unsigned.all;
 entity d_ff is
 port( d,clk: in std_logic;
      q: out std_logic);
-end D_FF;
+end d_ff;
  
 architecture behavioral of d_ff is
 begin
