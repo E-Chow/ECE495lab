@@ -15,8 +15,9 @@ architecture dataflow of bsr is
 	signal direction => std_logic := left_right;
 
 begin
-	zbit: bsr_unit port map( right_in=>q(1), left_in=> q(n-1), bsr_q=>q(0), left_right=>direction, bsr_clk=>clk);
+	zbit: bsr_unit port map( right_in=>q(1), left_in=> shift_in, bsr_q=>q(0), left_right=>direction, bsr_clk=>clk);
 	reg: for i is 1 to n-2 generate
 		rbit: bsr_unit port map( right_in=>q(i+1), left_in=> q(i-1), bsr_q=>q(i), left_right=>direction, bsr_clk=>clk);
 	end generate;
-	nbit: bsr_unit port map( right_in=>q(0), left_in=> q(n-2), bsr_q=>q(n-1), left_right=>direction, bsr_clk=>clk);
+	nbit: bsr_unit port map( right_in=>shift_in, left_in=> q(n-2), bsr_q=>q(n-1), left_right=>direction, bsr_clk=>clk);
+end dataflow;
