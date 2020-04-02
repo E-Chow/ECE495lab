@@ -13,12 +13,12 @@ architecture structure of bsr_unit is
 	component mux_2to1 is
 		Port ( sel,a,b : in  STD_LOGIC;
          		x   : out STD_LOGIC);
-	end mux_2to1;
+	end component;
 
 	component d_ff is
 		port( d, clk: in std_logic;
 		     q: out std_logic);
-	end d_ff;
+	end component;
 	
 	signal tmp: STD_LOGIC;
 	
