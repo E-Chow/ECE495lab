@@ -1,4 +1,4 @@
-ibrary IEEE;
+library IEEE;
 use IEEE.std_logic_1164.all;
 
 entity bsr_unit is
@@ -24,11 +24,7 @@ architecture structure of bsr_unit is
 	
 	begin
 		
-	Mux: mux_2to1 port map(a=>left_in, b=>right_in, sel=>let_right, x=>tmp);
-	ff: d_ff port map(d=>x, clk=>bsr_clk, q=>bsr_q);
+	Mux: mux_2to1 port map(a=>left_in, b=>right_in, sel=>left_right, x=>tmp);
+	ff: d_ff port map(d=>tmp, clk=>bsr_clk, q=>bsr_q);
 		
 end structure;
-		
-
-
-
