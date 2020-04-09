@@ -33,7 +33,7 @@ begin
 	end generate;
 	
 	useq: exp7_useq generic map (uROM_width=>17, uROM_file=>"uROM_file.mif")
-							 port map (uop=>ctrlSignals,enable=>useqEnable,
+							 port map (uop=>uop,enable=>useqEnable,
 										  clear=>useqClear, clock=>clk,opcode=>"0011");
 	
 end structure;
