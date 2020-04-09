@@ -5,8 +5,8 @@ use lpm.lpm_components.all;
 
 entity lab7 is
 	port (clk, clear: in std_logic;
-	      useqEnOut: out std_logic;
-	      ctrlSignals: out std_logic_vector(0 to 7));
+			useqEnOut: out std_logic;
+			ctrlSignals: out std_logic_vector(0 to 7));
 end lab7;
 
 architecture structure of lab7 is
