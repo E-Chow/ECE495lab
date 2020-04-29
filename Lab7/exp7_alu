@@ -18,22 +18,23 @@ port (a, b: in std_logic_vector(7 downto 0);
 end exp7_alu;
 
 architecture structural of exp7_alu is
+
 signal add_result, xor_result: std_logic_vector(7 downto 0);
 signal mux_data: std_logic_2D(1 downto 0, 7 downto 0);
 
 begin
-  alu_adder: lpm_add_sub
-    generic map (lpm_width=>8)
-    port map (dataa=>a, datab=>b, result=>add_result);
-  xor_result <= a xor b;
+      alu_adder: lpm_add_sub
+            generic map (lpm_width=>8)
+            port map    (dataa=>a, datab=>b, result=>add_result);
+            xor_result <= a xor b;
+                  
+      for_label: for i in 7 downto 0 generate
+            mux_data(0,i) <= add_result(i);
+            mux_data(1,i) <= xor_result(i);
+      end generate;
 
-  for_label: for i in 7 downto 0 generate
-    mux_data(0,i) <= add_result(i);
-    mux_data(1,i) <= xor_result(i);
-  end generate;
-
-  alu_mux: lpm_mux
-    generic map (lpm_width=>8, lpm_size=>2, lpm_widths=>1)
-    port map (data=>mux_data, result=>result, sel=>op);
-
+      alu_mux: lpm_mux
+            generic map (lpm_width=>8, lpm_size=>2, lpm_widths=>1)
+            port map (data=>mux_data, result=>result, sel=>op);
+            
 end structural;
