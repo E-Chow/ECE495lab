@@ -5,17 +5,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
  
 entity seven_seg is
-Port ( valin : in STD_LOGIC_VECTOR (3 downto 0);
+Port (valin : in STD_LOGIC_VECTOR (3 downto 0);
       Seven_Segment : out STD_LOGIC_VECTOR (0 to 6));
 end seven_seg;
  
 architecture Behavioral of seven_seg is
- 
+
 begin
- 
 	process(valin)
 	begin
- 
 		case valin is
 			when "0000" => Seven_Segment <= "0000001"; ---0
 			when "0001" => Seven_Segment <= "1001111"; ---1
@@ -35,7 +33,5 @@ begin
 			when "1111" => Seven_Segment <= "0111000"; ---F
 			when others => Seven_Segment <= "1111111"; ---null
 		end case;
- 
 	end process;
- 
 end Behavioral;
