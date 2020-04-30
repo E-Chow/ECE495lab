@@ -1,0 +1,93 @@
+-- ECE 495 Exp. 7
+-- RAM mif file, exp7_ram_06_10.mif
+-- Dr. Hou
+-- Spring 2020
+--
+
+depth = 256;
+width = 8;
+address_radix = hex;
+data_radix = hex;
+content
+  begin
+    [0..FF]: 00;
+
+---- Test 6 - JUMP -----------------------------------------------
+----
+---- 00: load F1      A = 12
+---- 02: jump 10      A = 12
+---- 04: load F2
+---- 06: halt
+---- 10: load F3      A = 34
+---- 12: load F4      A = 56
+---- 14: halt
+----
+--   00: 20 F1 80 10 20 F2 F0; 
+--   10: 20 F3 20 F4 F0;       
+--   F1: 12 FF 34 56;
+----
+---- Test 7 - TESTNZ, JUMPZ --------------------------------------
+----
+---- 00: load F1      A = 12
+---- 02: testnz       A = 12, Z=0
+---- 03: jumpz B0     A = 12, should not jump
+---- 05: load F2      A = FF
+---- 07: halt
+---- B0: load F3
+---- B2: load F4
+---- B4: halt
+----
+--   00: 20 F1 70 90 B0 20 F2 F0;
+--   B0: 20 F3 20 F4 F0;
+--   F1: 12 FF 34 35;
+--
+---- Test 8 - TESTNZ, JUMPZ --------------------------------------
+----
+---- 00: load F2      A = FF
+---- 02: load F1      A = 00
+---- 04: testnz       A = 00, Z=1
+---- 05: jumpz B0     A = 00, jump to B0
+---- 07: load F2      
+---- 09: halt
+---- B0: load F3      A = 34
+---- B2: load F4      A = 35
+---- B4: halt
+----
+--   00: 20 F2 20 F1 70 90 B0 20 F2 F0;
+--   B0: 20 F3 20 F4 F0;
+--   F1: 00 FF 34 35;
+--
+---- Test 9 - TESTZ, JUMPZ ---------------------------------------
+----
+---- 00: load F1      A = 12
+---- 02: testz        A = 12, Z=1
+---- 03: jumpz B0     A = 12, jump to B0
+---- 05: load F2      
+---- 07: halt
+---- B0: load F3      A = 34
+---- B2: load F4      A = 35
+---- B4: halt
+----
+--   00: 20 F1 71 90 B0 20 F2 F0;
+--   B0: 20 F3 20 F4 F0;
+--   F1: 12 FF 34 35;
+----
+---- Test 10 - TESTZ, JUMPZ ---------------------------------------
+----
+---- 00: load F2      A = FF
+---- 02: load F1      A = 00
+---- 04: testz        A = 00, Z=0
+---- 05: jumpz B0     A = 00, should not jump
+---- 07: load F2      A = FF
+---- 09: halt
+---- B0: load F3      
+---- B2: load F4      
+---- B4: halt
+----
+   00: 20 F2 20 F1 71 90 B0 20 F2 F0;
+   B0: 20 F3 20 F4 F0;
+   F1: 00 FF 34 35;
+
+----------------------------------------------------------------
+
+  end; 

@@ -1,0 +1,86 @@
+-- ECE 495 Exp. 7
+-- RAM mif file, exp7_ram_11_14.mif
+-- Dr. Hou
+-- Spring 2020
+--
+
+depth = 256;
+width = 8;
+address_radix = hex;
+data_radix = hex;
+content
+  begin
+    [0..FF]: 00;
+----
+---- Test 11 - M[F0]+M[F1]+M[F2]+M[F3]+M[F4] ----------------------
+----
+---- M[F0]+M[F1]+M[F2]+M[F3]+M[F4]
+----
+---- 00: load FF     A = 00
+---- 02: load F0     A = 01
+---- 04: move        A = 01, R = 01
+---- 05: load F1     A = 03
+---- 07: add         A = 04
+---- 08: move        A = 04, R = 04
+---- 09: load F2     A = 05
+---- 0B: add         A = 09
+---- 0C: move        A = 09, R = 09
+---- 0D: load F3     A = 07
+---- 0F: add         A = 10
+---- 10: move        A = 10, R = 10
+---- 11: load F4     A = 09
+---- 13: add         A = 19
+---- 14: halt
+---- 
+-- 00: 20 FF 20 F0 40 20 F1 50 40 20 F2 50 40 20 F3 50 40 20 F4 50 F0; 
+-- F0: 01 03 05 07 09;
+-- FF: 00;
+
+----
+---- Test 12 - start counting from F0, stop when at 00 ------------
+----
+---- 00: loadi 01     A = 01
+---- 02: move         A = 01, R = 01
+---- 03: loadi F5     A = F5
+---- 05: add	      A = F6 F7 F8 F9 FA FB FC FD FE FF 00
+---- 06: testnz       A = F6 F7 F8 F9 FA FB FC FD FE FF 00
+---- 07: jumpz 05     A = F6 F7 F8 F9 FA FB FC FD FE FF 00
+---- 09: load FF      A = F0
+---- 0B: halt
+----
+--  0: 10 01 40 10 F5;
+--  5: 50 71 90 05 10 FF F0;
+
+----
+---- Test 13 - Stack manipulation ---------------------------------
+----
+---- 00: loadsp FF     	A = ?? SP = FF
+---- 02: addsp FC      	A = ?? SP = FB
+---- 04: loadi 44       A = 44 SP = FB
+---- 06: push 	      	A = 44 SP = FA  M[FA] = 44
+---- 07: loadi 20	A = 20 SP = FA
+---- 09: peep	      	A = 44 SP = FA
+---- 0A: halt		
+----
+-- 00: A0 FF B0 FC 10 44 D0 10 20 C0 F0;
+
+---- Test 14 - Stack manipulation ---------------------------------
+----
+---- 00: loadsp FF     	A = ?? SP = FF
+---- 02: load F0       	A = 44 SP = FF
+---- 04: push          	A = 44 SP = FE  M[FE] = 44
+---- 05: load F1	A = 77 SP = FE
+---- 07: push 	      	A = 77 SP = FD  M[FD] = 77
+---- 08: load F2	A = FF SP = FD
+---- 0A: peep	      	A = 77 SP = FD
+---- 0B: load F2	A = FF SP = FD
+---- 0D: pop	      	A = 77 SP = FE
+---- 0E: peep		A – 44 SP = FE
+----
+-- 00: A0 FF 20 F0 D0 20 F1 D0 20 F2 C0 20 F2 E0 C0;
+-- F0: 44 AA FF;
+
+-----------------------------------------------------------------
+
+end; 
+
