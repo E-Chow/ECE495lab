@@ -6,8 +6,8 @@ use lpm.lpm_components.all;
 entity lab7wk4 is
 	port (clk, clear: in std_logic;
 			useqEnOut: out std_logic;
-			AC: out std_logic_vector(7 downto 0);
-			Seg1, Seg2: out std_logic_vector(0 to 6);
+			AC, Rres, DR, IR, PC, MAR, MEMo, MUXout: out std_logic_vector(7 downto 0);
+			ACseg1, ACseg2, Rseg1, Rseg2, SPseg1, SPseg2: out std_logic_vector(0 to 6);
 			ctrlSignals: out std_logic_vector(0 to 20));
 end lab7wk4;
 
@@ -16,7 +16,7 @@ architecture structure of lab7wk4 is
 	component exp7_useq is
 		generic (uROM_width: integer;
 					uROM_file: string);
-		port (opcode: in std_logic_vector(7 downto 0);
+		port (opcode: in std_logic_vector(3 downto 0);
 				uop: out std_logic_vector(1 to (uROM_width-9));
 				enable, clear: in std_logic;
 				clock: in std_logic);
@@ -68,7 +68,7 @@ begin
 	MUX2sel(0)	<= uop(9) and useqEnable;
 	MUX3sel(0)	<= uop(10) and useqEnable;
 	MUX4sel(0)	<= uop(11) and useqEnable;
-	MUX5sel(0)	<= uop(12) and useqEnable;
+	MUX5sel(0)	<= (NOT irop(0)) and useqEnable;
 	PCclr		<= uop(13) and useqEnable;
 	PCinc		<= uop(14) and useqEnable;
 	Jump	<= uop(15) and useqEnable;
@@ -98,7 +98,7 @@ begin
 	useq: exp7_useq
 				generic map (uROM_width=>30, uROM_file=> "uROM_file.mif")
 				port map		(uop=>uop, enable=>useqEnable,
-								 clear=>useqClear, clock=>clk, opcode=>irop);
+								 clear=>useqClear, clock=>clk, opcode=>irop(7 downto 4));
 
 	MUX1: lpm_mux
 				generic map (lpm_width=>8, lpm_size=>3, lpm_widths=>2)
@@ -125,7 +125,7 @@ begin
 				port map		(clock=>clk, enable=>MARload, q=>MARout, data=>MARin);
 
 	mem: lpm_ram_dq
-				generic map (lpm_width=>8, lpm_widthad=>8, lpm_file=>"exp7_ram_06_10.mif")
+				generic map (lpm_width=>8, lpm_widthad=>8, lpm_file=>"exp7_ram_11_14.mif")
 				port map		(inclock=>clk, outclock=>clk, we=>MEMwe, address=>MARout, data=>DRout, q=>MEMout);
 
 	drReg: lpm_ff
@@ -163,12 +163,30 @@ begin
 				generic map (lpm_width=>1)
 				port map 	(clock=>clk, enable=> Zload, q=>Zout, data=>Zin);
 				
-	disp1: seven_seg
-				port map		(valin=>ACout(7 downto 4), Seven_Segment=>Seg1);
+	ACdisp1: seven_seg
+				port map		(valin=>ACout(7 downto 4), Seven_Segment=>ACseg1);
+				
+	ACdisp2: seven_seg
+				port map		(valin=>ACout(3 downto 0), Seven_Segment=>ACseg2);
+				
+	Rdisp1: seven_seg
+				port map		(valin=>Rout(7 downto 4), Seven_Segment=>Rseg1);
+				
+	Rdisp2: seven_seg
+				port map		(valin=>Rout(3 downto 0), Seven_Segment=>Rseg2);
+				
+	SPdisp1: seven_seg
+				port map		(valin=>SPout(7 downto 4), Seven_Segment=>SPseg1);
 				
 	disp2: seven_seg
-				port map		(valin=>ACout(3 downto 0), Seven_Segment=>Seg2);
-
+				port map		(valin=>SPout(3 downto 0), Seven_Segment=>SPseg2);
+				
 	AC <= ACout;
+	DR <= DRout;
+	IR <= irop;
+	PC <= PCout;
+	MAR <= MARout;
+	MEMo <= MEMout;
+	MUXout <= DRin;
 
 end structure;
