@@ -10,7 +10,7 @@ use lpm.lpm_components.all;
 entity exp7_useq is
   generic (uROM_width: integer := 25;
            uROM_file: string := "");
-  port (opcode: in std_logic_vector(7 downto 0);
+  port (opcode: in std_logic_vector(3 downto 0);
         uop: out std_logic_vector(1 to (uROM_width-9));
         enable, clear: in std_logic;
         clock: in std_logic);
@@ -26,7 +26,7 @@ signal uPC_mux_out: std_logic_vector(7 downto 0);
 signal temp: std_logic_vector(7 downto 0);
 
 begin 
-  temp <= opcode;
+  temp <= opcode & "0000";
   for_label: for i in 0 to 7 generate
        uPC_mux_data(0, i) <= uROM_out(i);
        uPC_mux_data(1, i) <= temp(i);
